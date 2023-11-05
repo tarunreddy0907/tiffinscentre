@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Taste It Again</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            position: relative; /* Add this line to position the container relative to the image gallery */
+            z-index: 1; /* Add this line to ensure the container appears in front */
+        }
+
+        .image-gallery {
+            position: absolute; /* Change position to absolute */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .image-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .image-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-slide.active {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-gallery">
+        <div class="image-slide active">
+            <img src="./Images/idly.avif" alt="Idly">
+        </div>
+
+        <div class="image-slide">
+            <img src="./Images/vada.jpg" alt="Vada">
+        </div>
+
+        <div class="image-slide">
+            <img src="./Images/puri.webp" alt="Puri">
+        </div>
+
+        <div class="image-slide">
+            <img src="./Images/dosa.jpg" alt="Dosa">
+        </div>
+    </div>
+    <div class="container">
+        <h2 class="text-center">TASTE IT AGAIN</h2>
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" class="form-control" id="fullname" name="fullname" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" id="signup-button">Sign Up</button>
+            <button type="button" class="btn btn-primary btn-block" id="signin">Sign in</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#signup-button").click(function () {
+                // Collect form data
+                var formData = {
+                    fullname: $("#fullname").val(),
+                    email: $("#email").val(),
+                    password: $("#password").val()
+                };
+
+                // Store user data in local storage
+                var users = JSON.parse(localStorage.getItem('users')) || [];
+                users.push(formData);
+                localStorage.setItem('users', JSON.stringify(users));
+
+                // Show a success message
+                alert("Sign-up successful! You can now log in.");
+
+                // Redirect the user to the login page
+                window.location.href = "login.html";
+            });
+            $("#signin").click(function () {
+                window.location.href = "login.html";
+            });
+        });
+    </script>
+    <script>
+        // Auto-slide functionality
+        let currentSlide = 0;
+        const imageSlides = document.querySelectorAll('.image-slide');
+
+        function showSlide(index) {
+            imageSlides.forEach(slide => slide.classList.remove('active'));
+            imageSlides[index].classList.add('active');
+        }
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % imageSlides.length;
+            showSlide(currentSlide);
+        }, 2000); // Change interval time to adjust slide duration
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: left;
+            align-items: start;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Updated label and input styles */
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .input-container label {
+            width: 45%; /* Adjust as needed */
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .input-container input[type="text"],
+        .input-container input[type="number"],
+        .input-container input[type="radio"] {
+            width: 55%; /* Adjust as needed */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Image Gallery Styles */
+        .image-gallery {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .image-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .image-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-slide.active {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="image-gallery">
+        <div class="image-slide active">
+            <img src="./Images/idly.avif" alt="Idly">
+        </div>
+
+        <div class="image-slide">
+            <img src="./Images/vada.jpg" alt="Vada">
+        </div>
+
+        <div class="image-slide">
+            <img src="./Images/puri.webp" alt="Puri">
+        </div>
+
+        <div class="image-slide">
+            <img src="./Images/dosa.jpg" alt="Dosa">
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h2>Tiffin Order Form</h2>
+        <form>
+            <div class="input-container">
+                <label for="customerName">Customer Name:</label>
+                <input type="text" id="customerName" required>
+            </div>
+
+            <div class="input-container">
+                <label for="contactNumber">Contact Number:</label>
+                <input type="text" id="contactNumber" required>
+            </div>
+
+            <div class="input-container">
+                <label for="deliveryAddress">Delivery Address:</label>
+                <input type="text" id="deliveryAddress" required>
+            </div>
+
+            <label>Select the items you'd like to order and specify the quantity:</label>
+
+            <div class="input-container">
+                <label for="idly">Idly (Rs. 40 per plate):</label>
+                <input type="number" id="idly" min="0">
+            </div>
+
+            <div class="input-container">
+                <label for="vada">Vada (Rs. 50 per plate):</label>
+                <input type="number" id="vada" min="0">
+            </div>
+
+            <div class="input-container">
+                <label for="puri">Puri (Rs. 50 per plate):</label>
+                <input type="number" id="puri" min="0">
+            </div>
+
+            <div class="input-container">
+                <label for="dosa">Dosa (Rs. 60 per plate):</label>
+                <input type="number" id="dosa" min="0">
+            </div>
+
+            <label>Payment Method:</label>
+            <div class="input-container">
+                <input type="radio" name="paymentMethod" value="Cash on Delivery" id="cashOnDelivery" checked>
+                <label for="cashOnDelivery">Cash on Delivery</label>
+            </div>
+
+            <div class="input-container">
+                <input type="radio" name="paymentMethod" value="Online Payment" id="onlinePayment">
+                <label for="onlinePayment">Online Payment (Please provide email for payment link)</label>
+            </div>
+
+            <label for="totalAmount">Total Bill: Rs. <span id="totalAmount">0</span></label>
+
+            <button type="button" onclick="calculateTotal()">Calculate Total</button>
+            <button type="button" onclick="submitOrder()">Submit Order</button>
+        </form>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            const idlyPrice = 40;
+            const vadaPrice = 50;
+            const puriPrice = 50;
+            const dosaPrice = 60;
+
+            const idlyQuantity = parseInt(document.getElementById('idly').value) || 0;
+            const vadaQuantity = parseInt(document.getElementById('vada').value) || 0;
+            const puriQuantity = parseInt(document.getElementById('puri').value) || 0;
+            const dosaQuantity = parseInt(document.getElementById('dosa').value) || 0;
+
+            const totalAmount = idlyQuantity * idlyPrice + vadaQuantity * vadaPrice + puriQuantity * puriPrice + dosaQuantity * dosaPrice;
+            document.getElementById('totalAmount').textContent = totalAmount;
+        }
+
+        // Add event listeners to update the total when quantity changes
+        document.getElementById('idly').addEventListener('change', calculateTotal);
+        document.getElementById('vada').addEventListener('change', calculateTotal);
+        document.getElementById('puri').addEventListener('change', calculateTotal);
+        document.getElementById('dosa').addEventListener('change', calculateTotal);
+
+        function submitOrder() {
+            // You can add code to send the order to your backend or perform other actions here.
+            // For simplicity, this example doesn't handle the actual order submission.
+            alert('Order submitted!');
+
+            // Reset the form
+            document.getElementById('customerName').value = '';
+            document.getElementById('contactNumber').value = '';
+            document.getElementById('deliveryAddress').value = '';
+            document.getElementById('idly').value = '';
+            document.getElementById('vada').value = '';
+            document.getElementById('puri').value = '';
+            document.getElementById('dosa').value = '';
+            document.getElementById('totalAmount').textContent = '0';
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Auto-slide functionality
+        let currentSlide = 0;
+        const imageSlides = document.querySelectorAll('.image-slide');
+
+        function showSlide(index) {
+            imageSlides.forEach(slide => slide.classList.remove('active'));
+            imageSlides[index].classList.add('active');
+        }
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % imageSlides.length;
+            showSlide(currentSlide);
+        }, 2000); // Change interval time to adjust slide duration
+    </script>
+</body>
+
+</html>
